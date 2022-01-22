@@ -12,13 +12,17 @@
     <div class="wrapper">
         <header>
                 <a href="/">
-                <img src="../../public/assets/logo_tech_talk.png" alt="" width="250" height="70">
+                <img src="/assets/logo_tech_talk.png" alt="" width="180" height="60">
                 </a>
                 <nav>
                     <a href="/">Home</a> |
                     <a href="/dashboard/">Dashboard</a> |
-                    <a href="/login/">Login</a> |
-                    <a href="/">logout</a>
+                   
+                    {{#if loggedIn}}
+                    <a id="logout" href="/">Logout</a> 
+                    {{else}}
+                     <a href="/login/">Login</a> 
+                     {{/if}}
                 </nav>
         </header>
         <main>
@@ -28,5 +32,8 @@
             Thanks for visiting! And Happy coding!
         </footer>
     </div>
+    {{#if loggedIn}}
+    <script src="/javascript/logout.js"></script>
+    {{/if}}
 </body>
 </html>
