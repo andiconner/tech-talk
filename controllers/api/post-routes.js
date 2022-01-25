@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const { Post, User, Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 // In a query to the post table, we would like to retrieve not only 
 //information about each post, but also the user that posted it
 
 //get all users
 router.get('/', (req, res) => {
     Post.findAll({
-        attributes: ['id', 'post_url', 'title', 'created_at'],
+        attributes: ['id', 'post_content', 'title', 'created_at'],
         order: [['created_at', 'DESC']],// This will ensure that the latest posted articles will appear first
         include: [
             {
@@ -35,7 +36,7 @@ router.get('/:id', (req, res) => {
         where: {
             id: req.params.id
         },
-        attributes: ['id', 'post_url', 'title', 'created_at'],
+        attributes: ['id', 'post_content', 'title', 'created_at'],
         include: [
             {
                 model: Comment,
@@ -65,12 +66,12 @@ router.get('/:id', (req, res) => {
 });
 
 //POST a post
-router.post('/', (req, res) => {
-    // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
+router.post('/', withAuth, (req, res) => {
+    // expects {title: 'Taskmaster goes public!', post_content: 'MVC is an architectural pattern consisting of three parts: Model, View, Controller. Model: Handles data logic. View: It displays the information from the model to the user. Controller: It controls the data flow into a model object and updates the view whenever data changes.', user_id: 1}
     Post.create({
         title: req.body.title,
-        post_url: req.body.post_url,
-        user_id: req.body.user_id
+        post_content: req.body.post_content,
+        user_id: req.session.user_id //the user id can be obtained from the session.These values are grabded on form submission
     })
         .then(dbPostData => res.json(dbPostData))
         .catch(err => {
@@ -80,7 +81,7 @@ router.post('/', (req, res) => {
 });
 
 //UPDATE a post
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
     Post.update(
         {
             title: req.body.title
@@ -105,7 +106,7 @@ router.put('/:id', (req, res) => {
 });
 
 //DELETE a post
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
     Post.destroy({
         where: {
             id: req.params.id

@@ -11,19 +11,19 @@
 <body>
     <div class="wrapper">
         <header>
-                <a href="/">
+            <a href="/">
                 <img src="/assets/logo_tech_talk.png" alt="" width="180" height="60">
-                </a>
-                <nav>
-                    <a href="/">Home</a> |
-                    <a href="/dashboard/">Dashboard</a> |
-                   
-                    {{#if loggedIn}}
-                    <a id="logout" href="/">Logout</a> 
-                    {{else}}
-                     <a href="/login/">Login</a> 
-                     {{/if}}
-                </nav>
+            </a>
+            <nav>
+                <a href="/">Home</a> |
+                
+                {{#if loggedIn}}
+                <a href="/dashboard/">Dashboard</a> |
+                <a id="logout" href="/">Logout</a>
+                {{else}}
+                <a href="/login/">Login</a>
+                {{/if}}
+            </nav>
         </header>
         <main>
             {{{ body }}}
@@ -36,4 +36,5 @@
     <script src="/javascript/logout.js"></script>
     {{/if}}
 </body>
+
 </html>
